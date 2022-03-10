@@ -22,6 +22,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     image = File(pickedFile!.path);
+    setState(() {});
 
     var fileName = DateTime.now().toString() + '.jpg';
     Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
@@ -46,8 +47,8 @@ class _CameraScreenState extends State<CameraScreen> {
                     itemBuilder: (context, index) {
                       var post = snapshot.data!.docs[index];
                       return ListTile(
-                          leading: Text(post['weight'].toString()));
-                          //title: Text(post['title']));
+                          leading: Text(post['weight'].toString()),
+                          title: Text(post['title']));
                     },
                   ),
                 ),
