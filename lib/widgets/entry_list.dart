@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
+import 'package:wasteagram/models/waste_entry_DTO.dart';
 import 'package:wasteagram/screens/camera_screen.dart';
-import 'package:wasteagram/widgets/app_scaffold.dart';
+import 'package:wasteagram/screens/entry_view_screen.dart';
 
 class EntryList extends StatefulWidget {
   const EntryList({Key? key}) : super(key: key);
@@ -16,7 +19,6 @@ class EntryList extends StatefulWidget {
 class EntryListState extends State<EntryList> {
   File? image;
   final picker = ImagePicker();
-  
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,22 @@ class EntryListState extends State<EntryList> {
                   itemBuilder: (context, index) {
                     var post = snapshot.data!.docs[index];
                     return ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(
+                              builder: (context) => EntryViewScreen(
+                                wasteEntryDTO: WasteEntryDTO(
+                                  title: post['title'], 
+                                  imgURL: post['imageURL'], 
+                                  latitude: 'ex', 
+                                  longitude: 'ex', 
+                                  quantity: post['quantity']
+                                )
+                              )
+                            )
+                          );
+                        },
                         trailing: Text(post['quantity'].toString()),
                         title: Text(post['title']));
                   },
@@ -68,8 +86,6 @@ class EntryListState extends State<EntryList> {
 
   void uploadData() async {
     final url = await getImage();
-    final weight = DateTime.now().millisecondsSinceEpoch % 1000;
-    final title = 'Title ' + weight.toString();
     Navigator.of(context)
       .push(
         MaterialPageRoute(builder: (context) => CameraScreen(url: url))

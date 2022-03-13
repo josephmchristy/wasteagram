@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 class NewEntryForm extends StatefulWidget {
 
@@ -18,10 +19,47 @@ class _NewEntryFormState extends State<NewEntryForm> {
   final formKey = GlobalKey<FormState>();
   int quantity = 0;
   String title = '';
+  LocationData? locationData;
+  var locationService = Location();
+
+  @override
+  void initState() {
+    super.initState();
+    retrieveLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
     return newEntryForm(context);
+  }
+
+  void retrieveLocation() async {
+    try {
+      var _serviceEnabled = await locationService.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await locationService.requestService();
+        if (!_serviceEnabled) {
+          print('Failed to enable service. Returning.');
+          return;
+        }
+      }
+
+      var _permissionGranted = await locationService.hasPermission();
+      if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await locationService.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+          print('Location service permission not granted. Returning.');
+        }
+      }
+
+      locationData = await locationService.getLocation();
+    } on PlatformException catch (e) {
+      print('Error: ${e.toString()}, code: ${e.code}');
+      locationData = null;
+    }
+    locationData = await locationService.getLocation();
+    print('Latitude is ${locationData?.latitude}');
+    setState(() {});
   }
 
   Widget newEntryForm(BuildContext context){
@@ -106,6 +144,12 @@ class _NewEntryFormState extends State<NewEntryForm> {
   void uploadData() {
      FirebaseFirestore.instance
         .collection('posts')
-        .add({'title': title, 'quantity': quantity, 'imageURL': widget.url});
+        .add({
+          'title': title, 
+          'quantity': quantity, 
+          'imageURL': widget.url, 
+          'latitude': locationData?.latitude,
+          'longitude': locationData?.longitude
+        });
   }
 }
