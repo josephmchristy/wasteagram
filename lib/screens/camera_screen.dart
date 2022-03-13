@@ -1,87 +1,26 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:wasteagram/widgets/app_scaffold.dart';
+import 'package:wasteagram/widgets/new_entry_form.dart';
 
-class CameraScreen extends StatefulWidget {
-  const CameraScreen({Key? key}) : super(key: key);
+class CameraScreen extends StatelessWidget {
 
-  @override
-  _CameraScreenState createState() => _CameraScreenState();
-}
+  final String url;
 
-class _CameraScreenState extends State<CameraScreen> {
-  File? image;
-  final picker = ImagePicker();
-
-/*
-* Pick an image from the gallery, upload it to Firebase Storage and return 
-* the URL of the image in Firebase Storage.
-*/
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    image = File(pickedFile!.path);
-    setState(() {});
-
-    var fileName = DateTime.now().toString() + '.jpg';
-    Reference storageReference = FirebaseStorage.instance.ref().child(fileName);
-    UploadTask uploadTask = storageReference.putFile(image!);
-    await uploadTask;
-    final url = await storageReference.getDownloadURL();
-    return url;
-  }
+  const CameraScreen({ Key? key, required this.url }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData &&
-              snapshot.data!.docs.isNotEmpty) {
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var post = snapshot.data!.docs[index];
-                      return ListTile(
-                          leading: Text(post['weight'].toString()),
-                          title: Text(post['title']));
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  child: const Text('Select photo and upload data'),
-                  onPressed: () {
-                    uploadData();
-                  },
-                ),
-              ],
-            );
-          } else {
-            return Column(
-              children: [
-                const Center(child: CircularProgressIndicator()),
-                ElevatedButton(
-                  child: const Text('Select photo and upload data'),
-                  onPressed: () {
-                    uploadData();
-                  },
-                ),
-              ],
-            );
-          }
-        });
+   return AppScaffold(title: 'New Post', screen: cameraScreen(context));
   }
 
-  void uploadData() async {
-    final url = await getImage();
-    final weight = DateTime.now().millisecondsSinceEpoch % 1000;
-    final title = 'Title ' + weight.toString();
-    FirebaseFirestore.instance
-        .collection('posts')
-        .add({'weight': weight, 'title': title, 'url': url});
+  Widget cameraScreen(BuildContext context){
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          NewEntryForm(url: url)
+        ]
+      ),
+    );
   }
 }

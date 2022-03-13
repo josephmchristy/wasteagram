@@ -1,9 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:wasteagram/screens/camera_screen.dart';
+import 'package:wasteagram/screens/list_screen.dart';
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
+
+  static final routes = {
+    '/': (context) => const ListScreen()
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +25,8 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),
-            home: Scaffold(
-              appBar: AppBar(title: const Text('Hello'),),
-              body: const CameraScreen(),
-            )
+            routes: routes,
+            initialRoute: '/',
           );
         } else {
           return const CircularProgressIndicator();
