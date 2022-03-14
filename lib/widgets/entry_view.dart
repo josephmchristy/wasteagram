@@ -13,13 +13,17 @@ class EntryView extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Text('${wasteEntryDTO.title}'),
+          Text(wasteEntryDTO.title),
           const SizedBox(height: 10),
-          wasteImage(context),
+          Semantics(
+            enabled: true,
+            label: 'Image of {$wasteEntryDTO.title}',
+            child: wasteImage(context)
+          ),
           const SizedBox(height: 10),
-          Text('${wasteEntryDTO.quantity}'),
+          Text('Quantity: ${wasteEntryDTO.quantity}'),
           const SizedBox(height: 10),
-          Text('${wasteEntryDTO.latitude} ${wasteEntryDTO.longitude}')
+          Text('Latitude: ${wasteEntryDTO.latitude} Longitude: ${wasteEntryDTO.longitude}')
         ]
       ),
     );

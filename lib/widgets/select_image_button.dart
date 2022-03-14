@@ -48,8 +48,8 @@ class _SelectImageButtonState extends State<SelectImageButton> {
   }
 
   Widget selectImageButton() {
-    return ElevatedButton(
-      child: const Text('Select photo and upload data'),
+    return FloatingActionButton(
+      child: const Icon(Icons.add_a_photo),
       onPressed: () {
         uploadData();
       },

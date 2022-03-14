@@ -31,8 +31,8 @@ class EntryList extends StatelessWidget {
                                 wasteEntryDTO: WasteEntryDTO(
                                   title: post['title'], 
                                   imgURL: post['imageURL'], 
-                                  latitude: 'ex', 
-                                  longitude: 'ex', 
+                                  latitude: post['latitude'].toString(), 
+                                  longitude: post['longitude'].toString(), 
                                   quantity: post['quantity']
                                 )
                               )

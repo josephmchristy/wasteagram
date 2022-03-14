@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wasteagram/screens/list_screen.dart';
+import 'package:wasteagram/theme/custom_theme.dart';
 
 class MyApp extends StatelessWidget {
 
@@ -22,9 +24,7 @@ class MyApp extends StatelessWidget {
         if(snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
             title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
+            theme: CustomTheme.darkTheme,
             routes: routes,
             initialRoute: '/',
           );

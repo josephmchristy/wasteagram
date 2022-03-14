@@ -79,6 +79,7 @@ class _NewEntryFormState extends State<NewEntryForm> {
               button: true,
               enabled: true,
               onTapHint: 'Upload image.',
+              label: 'Upload iamge.',
             )
           ]
         ),
@@ -134,8 +135,8 @@ class _NewEntryFormState extends State<NewEntryForm> {
 
   
   Widget uploadButton() {
-    return ElevatedButton(
-      child: const Text('Upload data'),
+    return FloatingActionButton(
+      child: const Icon(Icons.file_upload_outlined),
        onPressed: () async {
         if (formKey.currentState!.validate()) {
           title = DateFormat.yMMMMEEEEd().format(DateTime.now()).toString();
