@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.oregonstate.christyj.wasteagram">
-   <!-- <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> -->
+   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
    <uses-permission android:name="android.permission.ACCES_FINE_LOCATION" />
    <application
         android:label="wasteagram"

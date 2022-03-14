@@ -10,7 +10,7 @@ class CameraScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return AppScaffold(title: 'New Post', screen: cameraScreen(context));
+   return AppScaffold(title: 'New Post', screen: cameraScreen(context), resize: false);
   }
 
   Widget cameraScreen(BuildContext context){

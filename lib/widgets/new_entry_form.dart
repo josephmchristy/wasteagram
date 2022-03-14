@@ -34,6 +34,7 @@ class _NewEntryFormState extends State<NewEntryForm> {
   }
 
   void retrieveLocation() async {
+    //locationService.enableBackgroundMode(enable: true);
     try {
       var _serviceEnabled = await locationService.serviceEnabled();
       if (!_serviceEnabled) {
@@ -55,7 +56,7 @@ class _NewEntryFormState extends State<NewEntryForm> {
       locationData = await locationService.getLocation();
     } on PlatformException catch (e) {
       print('Error: ${e.toString()}, code: ${e.code}');
-      locationData = null;
+      //locationData = null;
     }
     locationData = await locationService.getLocation();
     print('Latitude is ${locationData?.latitude}');
@@ -73,7 +74,12 @@ class _NewEntryFormState extends State<NewEntryForm> {
             const SizedBox(height: 10),
             itemNumberEntry(),
             const SizedBox(height: 10),
-            uploadButton()
+            Semantics(
+              child: uploadButton(),
+              button: true,
+              enabled: true,
+              onTapHint: 'Upload image.',
+            )
           ]
         ),
       ),
