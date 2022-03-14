@@ -59,7 +59,6 @@ class _NewEntryFormState extends State<NewEntryForm> {
       //locationData = null;
     }
     locationData = await locationService.getLocation();
-    print('Latitude is ${locationData?.latitude}');
     setState(() {});
   }
 
@@ -70,7 +69,11 @@ class _NewEntryFormState extends State<NewEntryForm> {
         key: formKey,
         child: Column(
           children: [
-            wasteImage(context),
+            Semantics(
+              enabled: true,
+              label: 'Selected image.',
+              child: wasteImage(context)
+            ),
             const SizedBox(height: 10),
             itemNumberEntry(),
             const SizedBox(height: 10),
@@ -79,7 +82,6 @@ class _NewEntryFormState extends State<NewEntryForm> {
               button: true,
               enabled: true,
               onTapHint: 'Upload image.',
-              label: 'Upload iamge.',
             )
           ]
         ),
