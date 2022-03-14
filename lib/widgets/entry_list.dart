@@ -11,7 +11,10 @@ class EntryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+      stream: FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy('timestamp', descending: true)
+        .snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData &&
             snapshot.data!.docs.isNotEmpty) {
@@ -29,18 +32,19 @@ class EntryList extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => EntryViewScreen(
                                 wasteEntryDTO: WasteEntryDTO(
-                                  title: post['title'], 
+                                  date: post['date'], 
                                   imgURL: post['imageURL'], 
                                   latitude: post['latitude'].toString(), 
                                   longitude: post['longitude'].toString(), 
-                                  quantity: post['quantity']
+                                  quantity: post['quantity'],
+                                  //timestamp: DateTime.parse(post['timestamp'].toDate().toString())
                                 )
                               )
                             )
                           );
                         },
                         trailing: Text(post['quantity'].toString()),
-                        title: Text(post['title']));
+                        title: Text(post['date']));
                   },
                 ),
               ),

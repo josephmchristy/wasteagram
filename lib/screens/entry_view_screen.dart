@@ -11,6 +11,6 @@ class EntryViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(title: wasteEntryDTO.title, screen: EntryView(wasteEntryDTO: wasteEntryDTO));
+    return AppScaffold(title: wasteEntryDTO.date, screen: EntryView(wasteEntryDTO: wasteEntryDTO));
   }
 }

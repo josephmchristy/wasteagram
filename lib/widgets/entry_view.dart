@@ -13,11 +13,11 @@ class EntryView extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          Text(wasteEntryDTO.title),
+          Text(wasteEntryDTO.date),
           const SizedBox(height: 10),
           Semantics(
             enabled: true,
-            label: 'Image of {$wasteEntryDTO.title}',
+            label: 'Image of {$wasteEntryDTO.date}',
             child: wasteImage(context)
           ),
           const SizedBox(height: 10),

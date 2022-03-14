@@ -18,7 +18,7 @@ class _NewEntryFormState extends State<NewEntryForm> {
 
   final formKey = GlobalKey<FormState>();
   int quantity = 0;
-  String title = '';
+  String date = '';
   LocationData? locationData;
   var locationService = Location();
 
@@ -141,7 +141,7 @@ class _NewEntryFormState extends State<NewEntryForm> {
       child: const Icon(Icons.file_upload_outlined),
        onPressed: () async {
         if (formKey.currentState!.validate()) {
-          title = DateFormat.yMMMMEEEEd().format(DateTime.now()).toString();
+          date = DateFormat.yMMMMEEEEd().format(DateTime.now()).toString();
           formKey.currentState!.save();
           uploadData();
           Navigator.restorablePopAndPushNamed(context, '/');
@@ -154,11 +154,12 @@ class _NewEntryFormState extends State<NewEntryForm> {
      FirebaseFirestore.instance
         .collection('posts')
         .add({
-          'title': title, 
+          'date': date, 
           'quantity': quantity, 
           'imageURL': widget.url, 
           'latitude': locationData?.latitude,
-          'longitude': locationData?.longitude
+          'longitude': locationData?.longitude,
+          'timestamp': DateTime.now()
         });
   }
 }
